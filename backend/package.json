@@ -1,0 +1,38 @@
+{
+  "name": "password_manager_backend",
+  "version": "1.0.0",
+  "description": "Backend service for password manager",
+  "keywords": [
+    "backend",
+    "express-app",
+    "express",
+    "zero-security",
+    "security",
+    "backend-service"
+  ],
+  "homepage": "https://github.com/Punit9464/ZeroPass#readme",
+  "bugs": {
+    "url": "https://github.com/Punit9464/ZeroPass/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Punit9464/ZeroPass.git"
+  },
+  "license": "MIT",
+  "author": "Punit",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.0",
+    "signale": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
