@@ -12,6 +12,10 @@ const Navbar = () => {
     navigator('/signup');
   };
 
+  const handleLogInClick = () => {
+    navigator('/login');
+  }
+
   return (
     <motion.nav 
       initial={{ y: -100, opacity: 0 }}
@@ -55,6 +59,7 @@ const Navbar = () => {
             className="btn btn-primary"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={handleLogInClick}
           >
             LogIn
           </motion.button>
@@ -85,8 +90,8 @@ const Navbar = () => {
                 </a>
               </li>
             ))}
-            <li><a>Sign Up</a></li>
-            <li><a className="btn btn-primary mt-2">LogIn</a></li>
+            <li><a href='/signup'>Sign Up</a></li>
+            <li><a href='/login' className="btn btn-primary mt-2">LogIn</a></li>
           </ul>
         </motion.div>
       )}

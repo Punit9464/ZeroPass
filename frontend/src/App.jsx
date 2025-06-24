@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 import Signup from './components/Signup';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Toaster } from 'react-hot-toast';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
               </>
             } />
             <Route path='/signup' element={<Signup />} />
+            <Route path='/login' element={<Login />} />
           </Routes>
           <Footer />
         </BrowserRouter>

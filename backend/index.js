@@ -37,8 +37,10 @@ app.post('/signup', errorHandler(async function(req, res) {
 
 
 app.post('/login', errorHandler(async function(req, res) {
+    console.log(req.body);
     const { error, value } = loginSchema.validate(req.body);
-    if(error) throw new Error("Schema Validation Failed");
+    console.log(error);
+    if(error) throw new Error("Enter the credentials correctly");
 
     const currentUser = await user.findOne({ email: req.body.email });
     if(!currentUser) throw new Error("No Such User exists");
