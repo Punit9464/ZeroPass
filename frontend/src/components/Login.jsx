@@ -4,7 +4,7 @@ import { Shield, Eye, EyeOff, Mail, Lock, ArrowRight, Check, Fingerprint, Smartp
 import { useNavigate } from 'react-router';
 import { loginApi } from '../api/user';
 
-const Login = ({ onNavigate }) => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -216,7 +216,7 @@ const Login = ({ onNavigate }) => {
                       />
                       <span className="label-text text-slate-300">Remember me</span>
                     </label>
-                    <a href="#" className="text-accent hover:underline text-sm">
+                    <a href="/forgot-password" className="text-accent hover:underline text-sm">
                       Forgot password?
                     </a>
                   </div>
@@ -258,7 +258,7 @@ const Login = ({ onNavigate }) => {
                   <p className="text-slate-300">
                     Don't have an account? 
                     <button 
-                      onClick={() => onNavigate('signup')}
+                      onClick={() => navigator('signup')}
                       className="text-accent hover:underline ml-1 font-medium"
                     >
                       Sign up
