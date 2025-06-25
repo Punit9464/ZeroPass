@@ -3,6 +3,7 @@ function errorHandler(func) {
         try{
             await func(req, res, next);
         } catch(e) {
+            console.error(e);
             return res.json({ error: e.message || "Error" });
         }
     }
