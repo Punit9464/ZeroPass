@@ -81,6 +81,16 @@ app.post('/login', errorHandler(async function (req, res) {
     return res.json({ message: "Logged In" });
 }));
 
+app.get('/user', errorHandler(function(req, res) {
+    const userToken = req.cookies.pvtusrToken;
+    if(!userToken) throw new Error("Invalid Session");
+
+    jwt.verify(userToken, process.env.JWT_SECRET, function(err, decoded) {
+        if(err) throw new Error(err.message);
+        return res.json({ user: decoded });
+    });
+}));
+
 app.listen(PORT, () => {
     logger.success("Server is Listening to the PORT:", PORT);
 });

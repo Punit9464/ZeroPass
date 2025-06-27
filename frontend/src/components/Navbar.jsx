@@ -2,11 +2,13 @@ import { motion } from 'framer-motion';
 import { Shield, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router'
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);   
   const navigator = useNavigate();
 
+  const { user, userLoading } = useAuth();
 
   const handleSignInClick = () => {
     navigator('/signup');
@@ -47,7 +49,7 @@ const Navbar = () => {
       
       <div className="navbar-end">
         <div className="hidden lg:flex space-x-4">
-          <motion.button 
+          (<motion.button 
             className="btn btn-ghost text-white"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -61,8 +63,8 @@ const Navbar = () => {
             whileTap={{ scale: 0.95 }}
             onClick={handleLogInClick}
           >
-            LogIn
-          </motion.button>
+            { user ? "LogOut" : "LogIn" }
+          </motion.button>)
         </div>
         
         <div className="lg:hidden">

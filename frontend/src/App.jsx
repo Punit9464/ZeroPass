@@ -9,6 +9,7 @@ import Signup from './components/Signup';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Toaster } from 'react-hot-toast';
 import Login from './components/Login';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
@@ -28,21 +29,23 @@ function App() {
     >
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900" data-theme="custom">
         <BrowserRouter>
-          <Navbar />
-          <Toaster />
-          <Routes>
-            <Route path='/' element={
-              <>
-                <Hero />
-                <Features />
-                <Security />
-                <Pricing />
-              </>
-            } />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/login' element={<Login />} />
-          </Routes>
-          <Footer />
+          <AuthProvider>
+            <Navbar />
+            <Toaster />
+            <Routes>
+              <Route path='/' element={
+                <>
+                  <Hero />
+                  <Features />
+                  <Security />
+                  <Pricing />
+                </>
+              } />
+              <Route path='/signup' element={<Signup />} />
+              <Route path='/login' element={<Login />} />
+            </Routes>
+            <Footer />
+          </AuthProvider>
         </BrowserRouter>
       </div>
     </ReactLenis>
