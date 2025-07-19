@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Shield, Eye, EyeOff, Mail, Lock, ArrowRight, Check, Fingerprint, Smartphone } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { loginApi } from '../api/user';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +12,8 @@ const Login = () => {
     password: '',
     rememberMe: false
   });
+
+  const { setUser } = useAuth();
 
   const navigator = useNavigate();
 
@@ -68,7 +71,12 @@ const Login = () => {
     e.preventDefault();
 
     const res = await loginApi(formData);
-    res ? navigator('/dashboard') : navigator('/login');
+    if(res) {
+      setUser(res);
+      navigator('/dashboard');
+      return;
+    }
+    navigator('/login');
   }
 
   return (

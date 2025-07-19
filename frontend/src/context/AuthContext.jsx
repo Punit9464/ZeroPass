@@ -29,7 +29,7 @@ function AuthProvider({ children }) {
 
 
     return(
-        <AuthContext.Provider value={{ user, userLoading }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ user, setUser, userLoading }}>{children}</AuthContext.Provider>
     )
 }
 

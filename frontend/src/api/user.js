@@ -10,7 +10,7 @@ async function signupApi(formData) {
         return false;
     } else {
         toast.success(result.message);
-        return true;
+        return result.user;
     }
 }
 
@@ -23,8 +23,21 @@ async function loginApi(formData) {
         return false;
     } else {
         toast.success(result.message);
+        return result.user;
+    }
+}
+
+async function logoutApi() {
+    const response = await fetcher.post('/logout', {}, { withCredentials: true });
+    const result = response.data;
+
+    if(result.error) {
+        toast.error(result.error);
+        return false;
+    } else {
+        toast.success(result.message);
         return true;
     }
 }
 
-export { signupApi, loginApi };
+export { signupApi, loginApi, logoutApi };

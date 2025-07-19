@@ -3,12 +3,13 @@ import { Shield, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router'
 import { useAuth } from '../context/AuthContext';
+import { logoutApi } from '../api/user';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);   
+  const [isOpen, setIsOpen] = useState(false);
   const navigator = useNavigate();
 
-  const { user, userLoading } = useAuth();
+  const { user, setUser, userLoading } = useAuth();
 
   const handleSignInClick = () => {
     navigator('/signup');
@@ -18,15 +19,22 @@ const Navbar = () => {
     navigator('/login');
   }
 
+  const handleLogOutClick = async () => {
+    console.log("Logged out clicked");
+
+    const res = await logoutApi();
+    if(res) setUser(null);
+  }
+
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8 }}
       className="navbar bg-black/20 backdrop-blur-lg fixed top-0 z-50 border-b border-white/10"
     >
       <div className="navbar-start">
-        <motion.div 
+        <motion.div
           className="flex items-center space-x-2"
           whileHover={{ scale: 1.05 }}
         >
@@ -34,7 +42,7 @@ const Navbar = () => {
           <NavLink className="text-xl font-bold text-white">ZeroPass</NavLink>
         </motion.div>
       </div>
-      
+
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 text-white">
           {['Features', 'Security', 'Pricing', 'Support'].map((item) => (
@@ -46,10 +54,10 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-      
+
       <div className="navbar-end">
-        <div className="hidden lg:flex space-x-4">
-          (<motion.button 
+        {!user ? <div className="hidden lg:flex space-x-4">
+          <motion.button
             className="btn btn-ghost text-white"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -57,18 +65,25 @@ const Navbar = () => {
           >
             Sign Up
           </motion.button>
-          <motion.button 
+          <motion.button
             className="btn btn-primary"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleLogInClick}
-          >
-            { user ? "LogOut" : "LogIn" }
-          </motion.button>)
-        </div>
-        
+          >Log In
+          </motion.button>
+        </div> : <div>
+          <motion.button
+            className="btn btn-primary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleLogOutClick}
+          >Log Out
+          </motion.button>
+        </div>}
+
         <div className="lg:hidden">
-          <button 
+          <button
             className="btn btn-ghost text-white"
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -76,10 +91,10 @@ const Navbar = () => {
           </button>
         </div>
       </div>
-      
+
       {/* Mobile Menu */}
       {isOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="absolute top-full left-0 w-full bg-black/90 backdrop-blur-lg lg:hidden"

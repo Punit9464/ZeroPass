@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Shield, Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { signupApi } from '../api/user.js';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +17,7 @@ const Signup = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
 
   const navigator = useNavigate();
+  const { setUser } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +34,12 @@ const Signup = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     const user = await signupApi(formData);
-    user ? navigator('/login') : navigator('/signup');
+    if(user) {
+      setUser(user);
+      navigator('/dashboard');
+      return;
+    }
+    navigator('/signup');
   }
 
   const calculatePasswordStrength = (password) => {

@@ -36,9 +36,10 @@ app.post('/signup', errorHandler(async function (req, res) {
     const hashedPass = await bcrypt.hash(newUser.password, salt);
     newUser.password = hashedPass;
     await newUser.save();
-
+    let u;
     if (process.env.JWT_SECRET) {
-        const userToken = jwt.sign({ id: newUser._id, email: newUser.email, username: newUser.username }, process.env.JWT_SECRET, {
+        u = { id: newUser._id, email: newUser.email, username: newUser.username };
+        const userToken = jwt.sign(u, process.env.JWT_SECRET, {
             algorithm: 'HS512',
             expiresIn: '7d',
         });
@@ -50,7 +51,7 @@ app.post('/signup', errorHandler(async function (req, res) {
             sameSite: 'Lax'
         });
     }
-    return res.json({ message: "User Registered." });
+    return res.json({ user: u, message: "User Registered." });
 }));
 
 
@@ -63,9 +64,10 @@ app.post('/login', errorHandler(async function (req, res) {
 
     const samePass = await bcrypt.compare(req.body.password, currentUser.password);
     if (!samePass) throw new Error("Password doesn't Match");
-
+    let u;
     if (process.env.JWT_SECRET) {
-        const userToken = jwt.sign({ id: currentUser._id, email: currentUser.email, username: currentUser.username }, process.env.JWT_SECRET, {
+        u = { id: currentUser._id, email: currentUser.email, username: currentUser.username };
+        const userToken = jwt.sign(u, process.env.JWT_SECRET, {
             algorithm: 'HS512',
             expiresIn: '7d',
         });
@@ -78,18 +80,32 @@ app.post('/login', errorHandler(async function (req, res) {
         });
     }
 
-    return res.json({ message: "Logged In" });
+    return res.json({ user: u, message: "Logged In" });
 }));
 
 app.get('/user', errorHandler(function(req, res) {
     const userToken = req.cookies.pvtusrToken;
-    if(!userToken) throw new Error("Invalid Session");
+    if(!userToken) return;
 
     jwt.verify(userToken, process.env.JWT_SECRET, function(err, decoded) {
         if(err) throw new Error(err.message);
         return res.json({ user: decoded });
     });
 }));
+
+app.post('/logout', errorHandler(async function(req, res) {
+    const userToken = req.cookies.pvtusrToken;
+    if(!userToken) {
+        throw new Error("Invalid Session");
+    }
+
+    const checkToken = jwt.verify(userToken, process.env.JWT_SECRET);
+    if(!checkToken) throw new Error("Invalid User");
+
+    res.clearCookie('pvtusrToken');
+
+    return res.json({ message: "Loged out." });
+}))
 
 app.listen(PORT, () => {
     logger.success("Server is Listening to the PORT:", PORT);
